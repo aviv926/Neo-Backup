@@ -39,6 +39,7 @@ import com.machiav3lli.backup.ui.compose.icons.phosphor.FileZip
 import com.machiav3lli.backup.ui.compose.icons.phosphor.FloppyDisk
 import com.machiav3lli.backup.ui.compose.icons.phosphor.GameController
 import com.machiav3lli.backup.ui.compose.icons.phosphor.Hash
+import com.machiav3lli.backup.ui.compose.icons.phosphor.HardDrives
 import com.machiav3lli.backup.ui.compose.icons.phosphor.Key
 import com.machiav3lli.backup.ui.compose.icons.phosphor.Password
 import com.machiav3lli.backup.ui.compose.icons.phosphor.PlayCircle
@@ -261,6 +262,14 @@ val pref_backupCache = BooleanPref(
     summaryId = R.string.prefs_backupcache_summary,
     icon = Phosphor.Prohibit,
     defaultValue = false
+)
+
+val pref_checkStorageBeforeBackup = BooleanPref(
+    key = "srv-bkp.checkStorageBeforeBackup",
+    titleId = R.string.prefs_checkstoragebeforebackup,
+    summaryId = R.string.prefs_checkstoragebeforebackup_summary,
+    icon = Phosphor.HardDrives,
+    defaultValue = true
 )
 
 val pref_restoreDeviceProtectedData = BooleanPref(

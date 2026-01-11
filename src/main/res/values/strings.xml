@@ -441,6 +441,8 @@
     <string name="prefs_backupcache_summary">Back up files in cache directories</string>
     <string name="prefs_restorecache">Restore cached data</string>
     <string name="prefs_restorecache_summary">Restore files in cache directories</string>
+    <string name="prefs_checkstoragebeforebackup">Check storage before backup</string>
+    <string name="prefs_checkstoragebeforebackup_summary">Check available storage space before starting backup. Disable this when using remote storage where local checks may be inaccurate.</string>
     <string name="filters_tags">Tags</string>
     <string name="search_package">Search for the app in store</string>
     <string name="prefs_altbackupdate">Show ISO date format in backups</string>
