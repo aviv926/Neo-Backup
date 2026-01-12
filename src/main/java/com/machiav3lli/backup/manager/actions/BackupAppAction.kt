@@ -70,6 +70,7 @@ import com.machiav3lli.backup.utils.isEncryptionEnabled
 import com.machiav3lli.backup.utils.isPGPEncryptionEnabled
 import com.machiav3lli.backup.utils.isPasswordEncryptionEnabled
 import com.machiav3lli.backup.utils.suAddFiles
+import com.machiav3lli.backup.utils.BUFFER_SIZE
 import com.topjohnwu.superuser.ShellUtils
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream
