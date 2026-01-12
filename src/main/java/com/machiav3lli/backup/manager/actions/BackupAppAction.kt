@@ -50,6 +50,7 @@ import com.machiav3lli.backup.ui.pages.pref_backupCache
 import com.machiav3lli.backup.ui.pages.pref_backupPauseApps
 import com.machiav3lli.backup.ui.pages.pref_backupTarCmd
 import com.machiav3lli.backup.ui.pages.pref_fakeBackupSeconds
+import com.machiav3lli.backup.ui.pages.pref_remoteStorageMode
 import com.machiav3lli.backup.utils.CIPHER_ALGORITHM
 import com.machiav3lli.backup.utils.CryptoSetupException
 import com.machiav3lli.backup.utils.FileUtils.BackupLocationInAccessibleException
@@ -77,6 +78,7 @@ import org.apache.commons.compress.compressors.zstandard.ZstdCompressorOutputStr
 import org.koin.java.KoinJavaComponent.get
 import org.pgpainless.algorithm.SymmetricKeyAlgorithm
 import timber.log.Timber
+import java.io.BufferedOutputStream
 import java.io.IOException
 import java.io.OutputStream
 
@@ -256,7 +258,13 @@ open class BackupAppAction(context: Context, work: AppActionWork?, shell: ShellH
         )
         val backupFile = backupInstanceDir.createFile(backupFilename)
 
-        var outStream: OutputStream = backupFile.outputStream()!!
+        // Use BufferedOutputStream for remote storage to reduce network round-trips
+        var outStream: OutputStream = if (pref_remoteStorageMode.value) {
+            Timber.d("Using buffered output for remote storage mode")
+            BufferedOutputStream(backupFile.outputStream()!!, BUFFER_SIZE)
+        } else {
+            backupFile.outputStream()!!
+        }
 
         when {
             isPasswordEncryptionEnabled() -> {

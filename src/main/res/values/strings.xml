@@ -504,4 +504,6 @@
     <string name="backupdir_inaccessible">Backup location is not accessible</string>
     <string name="unknown_error">Unknown error</string>
     <string name="prefs_useexactalarm_title">Use exact alarm for schedules</string>
+    <string name="prefs_remotestoragemode_title">Remote storage mode</string>
+    <string name="prefs_remotestoragemode_summary">Enable for FTP/SMB/WebDAV/cloud storage. Uses longer timeouts (set in developer settings), skips storage space checks, and adds buffered I/O for reliability with large files (30GB+).</string>
 </resources>

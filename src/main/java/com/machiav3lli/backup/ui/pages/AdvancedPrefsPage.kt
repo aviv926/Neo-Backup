@@ -268,10 +268,18 @@ val pref_libsuUseRootShell = BooleanPref(
     defaultValue = true
 )
 
+val pref_remoteStorageMode = BooleanPref(
+    key = "adv.remoteStorageMode",
+    titleId = R.string.prefs_remotestoragemode_title,
+    summaryId = R.string.prefs_remotestoragemode_summary,
+    icon = Phosphor.Clock,
+    defaultValue = false
+)
+
 val pref_libsuTimeout = IntPref(
     key = "dev-adv.libsuTimeout",
-    summary = "[seconds] timeout for libsu commands (does not affect the tar commands)",
-    entries = ((10..90 step 10) + (100..300 step 50)).toList(),
+    summary = "[seconds] timeout for libsu commands (does not affect the tar commands). For remote storage with large files (30GB+), use 1800-3600s.",
+    entries = ((10..90 step 10) + (100..300 step 50) + (600..3600 step 300)).toList(),
     defaultValue = 60
 )
 

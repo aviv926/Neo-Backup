@@ -34,6 +34,7 @@ import com.machiav3lli.backup.manager.handler.ShellHandler.Companion.quote
 import com.machiav3lli.backup.manager.handler.ShellHandler.Companion.runAsRoot
 import com.machiav3lli.backup.manager.handler.findBackups
 import com.machiav3lli.backup.manager.handler.updateAppTables
+import com.machiav3lli.backup.ui.pages.pref_remoteStorageMode
 import timber.log.Timber
 import java.io.File
 import java.nio.file.attribute.PosixFilePermission
@@ -107,6 +108,12 @@ object FileUtils {
 
     @Throws(BackupAppAction.BackupFailedException::class)
     fun checkAvailableStorage(context: Context, app: Package, backupMode: Int) {
+        // Skip storage check for remote storage - detection is unreliable for network mounts
+        if (pref_remoteStorageMode.value) {
+            Timber.i("Remote storage mode enabled - skipping storage space check")
+            return
+        }
+
         val storageStatsCheck =
             context.getSystemService(Context.STORAGE_STATS_SERVICE) as? android.app.usage.StorageStatsManager
                 ?: throw BackupAppAction.BackupFailedException(

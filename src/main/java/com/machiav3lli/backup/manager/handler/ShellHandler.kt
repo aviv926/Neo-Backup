@@ -31,6 +31,7 @@ import com.machiav3lli.backup.manager.handler.ShellHandler.Companion.splitComman
 import com.machiav3lli.backup.manager.handler.ShellHandler.FileInfo.Companion.utilBoxInfo
 import com.machiav3lli.backup.ui.pages.baseInfo
 import com.machiav3lli.backup.ui.pages.pref_libsuTimeout
+import com.machiav3lli.backup.ui.pages.pref_remoteStorageMode
 import com.machiav3lli.backup.ui.pages.pref_libsuUseRootShell
 import com.machiav3lli.backup.ui.pages.pref_suCommand
 import com.machiav3lli.backup.utils.BUFFER_SIZE
@@ -992,9 +993,13 @@ class ShellHandler {
                     shellIn.close()
 
                     val err = errAsync.await()
-                    withContext(Dispatchers.IO) { process.waitFor(10, TimeUnit.SECONDS) }
-                    if (process.isAlive)
+                    // Use configurable timeout - default 60s, but can be set higher for remote storage with large files
+                    val timeout = pref_libsuTimeout.value.toLong().coerceAtLeast(60)
+                    withContext(Dispatchers.IO) { process.waitFor(timeout, TimeUnit.SECONDS) }
+                    if (process.isAlive) {
+                        Timber.w("Shell process timed out after ${timeout}s, killing forcibly")
                         process.destroyForcibly()
+                    }
                     val code = process.exitValue()
 
                     if (code != 0)
@@ -1034,11 +1039,15 @@ class ShellHandler {
                     outStream.flush()
 
                     val err = errAsync.await()
+                    // Use configurable timeout - default 60s, but can be set higher for remote storage with large files
+                    val timeout = pref_libsuTimeout.value.toLong().coerceAtLeast(60)
                     withContext(Dispatchers.IO) {
-                        process.waitFor(10, TimeUnit.SECONDS)
+                        process.waitFor(timeout, TimeUnit.SECONDS)
                     }
-                    if (process.isAlive)
+                    if (process.isAlive) {
+                        Timber.w("Shell process timed out after ${timeout}s for output streaming, killing forcibly")
                         process.destroyForcibly()
+                    }
                     val code = process.exitValue()
                     if (code != 0)
                         NeoApp.addErrorCommand(command)
